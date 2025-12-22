@@ -1,0 +1,26 @@
+[package]
+name = "bevy-test"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+bevy = { version = "0.18.0-rc.1", features = ["dynamic_linking"] }
+
+# 调试模式（开发时用）：开少量优化，不影响编译速度
+[profile.dev]
+
+
+# 调试模式下，给依赖项开满优化（依赖项不常改，优化了不影响开发）
+[profile.dev.package."*"]
+opt-level = 3
+
+# 发布模式（打包游戏用）：开更多优化，牺牲一点编译时间
+[profile.release]
+codegen-units = 1 # 把整个包编译成一个单元，编译慢一点，性能略提升
+lto = "thin" # 对整个程序（包括依赖）二次优化，编译慢一点，性能略提升
+
+# 网页端发布优化：减小文件体积，加载更快、省带宽
+[profile.wasm-release]
+inherits = "release" # 继承发布模式的配置
+opt-level = "s" # 优先优化文件大小（也能试 "z"，有时候效果更好）
+strip = "debuginfo" # 删掉调试信息，进一步减小文件体积
