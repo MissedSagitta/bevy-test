@@ -1,6 +1,7 @@
 use bevy::input::common_conditions::input_just_pressed;
 use bevy::prelude::*;
 
+mod planet;
 use bevy_test::*;
 
 fn main() {
